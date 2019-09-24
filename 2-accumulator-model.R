@@ -6,22 +6,34 @@
 # note that the function takes four arguments:
 # samples is the number of samples to draw from the model
 # rate.1 is the evidence accumulation rate for the correct response (default value is 40)
-# rate.1 is the evidence accumulation rate for the incorrect response (default value is 40)
+# rate.2 is the evidence accumulation rate for the incorrect response (default value is 40)
 # criterion is the threshold for a response (default value is 3)
 
 # one oddity: note that higher values for rate.1 and rate.2 will actually produce slower RTs.
 # this is because the rate parameter is controlling the rate of decay of the exponential distribution,
 # so faster rates mean that less evidence is likely to accumulate on each step. we could make
 # these parameters more intuitive by taking 1/rate.1 and 1/rate.2 as the values to rexp().
-
+?rexp
 accumulator.model <- function(samples, rate.1=40, rate.2=40, criterion=3){
-  
-
+  accuracy.array <- rep(0,samples)
+  rt.array <- rep(0,samples)
+  for (i in 1:samples){
+    evidence.1 <- 0
+    evidence.2 <- 0
+    nsteps <-0
+    accuracy.array[i] <- FALSE
+    while((evidence.1<criterion)||(evidence.2<criterion)){
+      evidence.1 <- evidence.1 + rexp(1,rate.1)
+      evidence.2 <- evidence.2 + rexp(1,rate.2)
+      nsteps <- nsteps+1
+    }
+    if((evidence.1>=criterion)&&(evidence.2<evidence.1)){accuracy.array[i]=TRUE}
+    rt.array[i]=nsteps
+  }
   output <- data.frame(
     correct = accuracy.array,
     rt = rt.array
   )
-  
   return(output)
 }
 

@@ -8,14 +8,25 @@
 # drift is the drift rate (default value is 0)
 # sdrw is the variability in the drift rate (default value is 0.3)
 # criterion is the threshold for a response (default value is 3)
-
+# just report when you hit the boundary
 random.walk.model <- function(samples, drift=0, sdrw=0.3, criterion=3){
-  
+  accuracy.array <- rep(0,samples)
+  rt.array <- rep(0,samples)
+  for (i in 1:samples){
+    nsteps <- 0
+    evidence <- 0
+    while(abs(evidence)<criterion){
+      evidence <- evidence + rnorm(1,drift,sdrw)
+      nsteps <- nsteps+1
+    }
+    if(evidence>0){accuracy.array[i] <- TRUE}
+    else{accuracy.array[i] <- FALSE}
+    rt.array[i] <- nsteps
+  }
   output <- data.frame(
     correct = accuracy.array,
     rt = rt.array
   )
-  
   return(output)
 }
 
@@ -30,7 +41,6 @@ sum(initial.test$correct) / length(initial.test$correct) # should be close to 0.
 mean(initial.test$rt) # should be about 112
 
 # visualize the RT distributions ####
-
 # we can use dplyr to filter the data and visualize the correct and incorrect RT distributions
 
 library(dplyr)
@@ -38,5 +48,5 @@ library(dplyr)
 correct.data <- initial.test %>% filter(correct==TRUE)
 incorrect.data <- initial.test %>% filter(correct==FALSE)
 
-hist(correct.data$rt)
-hist(incorrect.data$rt)
+hist(correct.data$rt, xlab="Decision time", xlim=c(0,max(correct.data$rt)))
+hist(incorrect.data$rt, xlab="Decision time",xlim=c(0,max(incorrect.data$rt)))
