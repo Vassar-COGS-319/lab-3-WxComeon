@@ -21,6 +21,7 @@ accumulator.model <- function(samples, rate.1=40, rate.2=40, criterion=3){
     evidence.1 <- 0
     evidence.2 <- 0
     nsteps <-0
+    #assume the model outputs FALSE
     accuracy.array[i] <- FALSE
     while((evidence.1<criterion)||(evidence.2<criterion)){
       evidence.1 <- evidence.1 + rexp(1,rate.1)

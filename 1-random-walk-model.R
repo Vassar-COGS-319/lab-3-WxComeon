@@ -10,7 +10,7 @@
 # criterion is the threshold for a response (default value is 3)
 # just report when you hit the boundary
 random.walk.model <- function(samples, drift=0, sdrw=0.3, criterion=3){
-  accuracy.array <- rep(0,samples)
+  accuracy.array <- rep(0,samples) #can also initialize the array using numeric() function
   rt.array <- rep(0,samples)
   for (i in 1:samples){
     nsteps <- 0
@@ -50,3 +50,5 @@ incorrect.data <- initial.test %>% filter(correct==FALSE)
 
 hist(correct.data$rt, xlab="Decision time", xlim=c(0,max(correct.data$rt)))
 hist(incorrect.data$rt, xlab="Decision time",xlim=c(0,max(incorrect.data$rt)))
+
+?rep

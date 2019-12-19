@@ -56,7 +56,8 @@ hist(acc.incorrect.data$rt, xlab="Decision time",xlim=c(0,max(acc.incorrect.data
 # These two models are both able to fit the data pretty well. The random walk model
 # predicts that people's decision time both in correct and incorrect trials would 
 # be skewed to the left. People are fast in responding to most trials, but in some 
-# trials they are slow. On the other hand, the accumulator model predicts that people's 
+# trials they are slow.The RW model also predicts a higher variability/standard deviation.
+# On the other hand, the accumulator model predicts that people's 
 # response time is normally distributed, centered around an average point. The accumulator
 # model with the rate parameter that uses exponential seems to sample and gain a fairly 
 # steady evidence each time compared to the random walk model.
